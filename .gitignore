@@ -229,3 +229,10 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+!/OpenAL-1.1/libs/*
+!/SDL2-2.0.3/lib/*
+!/glew-1.13.0/lib/*
+!/glew-1.13.0/bin/*
+!/_Projects/ZombieGame/Debug/SDL2.dll
+!/_Projects/ZombieGame/Debug/glew32.dll
