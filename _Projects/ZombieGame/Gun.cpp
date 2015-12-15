@@ -2,10 +2,12 @@
 #include <random>
 #include <ctime>
 #include <glm/gtx/rotate_vector.hpp>
+#include <Bengine/AudioManager.h>
+#include <Bengine/Errors.h>
 
-
-Gun::Gun(std::string name, int fireRate, int bulletsPerShot, float spread, float bulletDamage, float bulletSpeed) :
+Gun::Gun(std::string name, std::string sound, int fireRate, int bulletsPerShot, float spread, float bulletDamage, float bulletSpeed) :
     _name(name),
+	_sound(sound),
     _fireRate(fireRate),
     _bulletsPerShot(bulletsPerShot),
     _spread(spread),
@@ -30,12 +32,10 @@ void Gun::update(bool isMouseDown, const glm::vec2& position, const glm::vec2& d
 }
 
 void Gun::fire(const glm::vec2& direction, const glm::vec2& position, std::vector<Bullet>& bullets) {
-
     static std::mt19937 randomEngine(time(nullptr));
     // For offsetting the accuracy
     std::uniform_real_distribution<float> randRotate(-_spread, _spread);
-
-
+	Bengine::AudioManager::getInstance()->playOnce(_sound, 0.2f);
     for (int i = 0; i < _bulletsPerShot; i++) {
         // Add a new bullet
         bullets.emplace_back(position, 

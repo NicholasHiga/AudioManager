@@ -3,6 +3,7 @@
 #include <Bengine/Bengine.h>
 #include <Bengine/Timing.h>
 #include <Bengine/Errors.h>
+#include <Bengine/AudioManager.h>
 #include <random>
 #include <ctime>
 
@@ -16,6 +17,7 @@ const float HUMAN_SPEED = 1.0f;
 const float ZOMBIE_SPEED = 1.3f;
 const float PLAYER_SPEED = 5.0f;
 
+unsigned int musicID;
 MainGame::MainGame()  :
     _screenWidth(1024),
     _screenHeight(768),
@@ -69,6 +71,7 @@ void MainGame::initSystems() {
     // Set up the camera
     _camera.init(_screenWidth, _screenHeight);
 
+	musicID = Bengine::AudioManager::getInstance()->playLooping("Sounds/background_music.wav", 0.5f);
 }
 
 void MainGame::initLevel() {
@@ -103,9 +106,9 @@ void MainGame::initLevel() {
 
     // Set up the players guns
     const float BULLET_SPEED = 20.0f;
-    _player->addGun(new Gun("Magnum", 10, 1, 5.0f, 30, BULLET_SPEED));
-    _player->addGun(new Gun("Shotgun", 30, 12, 20.0f, 4, BULLET_SPEED));
-    _player->addGun(new Gun("MP5", 2, 1, 10.0f, 20, BULLET_SPEED));
+    _player->addGun(new Gun("Magnum", "Sounds/pistol.wav", 10, 1, 5.0f, 30, BULLET_SPEED));
+    _player->addGun(new Gun("Shotgun", "Sounds/rifle.wav", 30, 12, 20.0f, 4, BULLET_SPEED));
+    _player->addGun(new Gun("MP5", "Sounds/machine_gun.wav", 2, 1, 10.0f, 20, BULLET_SPEED));
 }
 
 void MainGame::initShaders() {
@@ -180,6 +183,8 @@ void MainGame::updateAgents() {
 
         // Collide with player
         if (_zombies[i]->collideWithAgent(_player)) {
+			Bengine::AudioManager::getInstance()->stop(musicID);
+			Bengine::AudioManager::getInstance()->playOnce("Sounds/game_over.wav", 0.3f);
             Bengine::fatalError("YOU LOSE");
         }
     }
@@ -219,6 +224,7 @@ void MainGame::updateBullets() {
                 // Damage zombie, and kill it if its out of health
                 if (_zombies[j]->applyDamage(_bullets[i].getDamage())) {
                     // If the zombie died, remove him
+					Bengine::AudioManager::getInstance()->playOnce("Sounds/zombie_death.wav", 0.2f);
                     delete _zombies[j];
                     _zombies[j] = _zombies.back();
                     _zombies.pop_back();
@@ -246,6 +252,7 @@ void MainGame::updateBullets() {
                     // Damage human, and kill it if its out of health
                     if (_humans[j]->applyDamage(_bullets[i].getDamage())) {
                         // If the human died, remove him
+						Bengine::AudioManager::getInstance()->playOnce("Sounds/human_death.wav", 1.0f);
                         delete _humans[j];
                         _humans[j] = _humans.back();
                         _humans.pop_back();

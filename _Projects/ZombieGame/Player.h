@@ -3,6 +3,7 @@
 #include "Human.h"
 #include <Bengine/InputManager.h>
 #include <Bengine/Camera2D.h>
+#include <Bengine/AudioManager.h>
 #include "Bullet.h"
 
 class Gun;
@@ -26,8 +27,15 @@ private:
     std::vector<Gun*> _guns;
     int _currentGunIndex;
 
+	bool _switch_sound_playing;
+	int _switch_sound_framecount_reset;
+	int _switch_frame_counter;
+
+	bool _walk_sound_playing;
+	int _walk_framecount_reset;
+	int _walk_frame_counter;
+
     Bengine::Camera2D* _camera;
     std::vector<Bullet>* _bullets;
-
 };
 
