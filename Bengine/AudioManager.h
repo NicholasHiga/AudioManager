@@ -33,7 +33,7 @@ namespace Bengine {
 
 		unsigned int playLooping(const std::string& fileID, float volume = 1.0f);
 
-		unsigned int playNumTimes(const std::string& fileID, unsigned int numTimes, float volume = 1.0f);
+		unsigned int playMultipleTimes(const std::string& fileID, unsigned int numTimes, float volume = 1.0f);
 
 		// If the unique playID sound is playing, it stops it immediately. 
 		void stop(unsigned int playID);

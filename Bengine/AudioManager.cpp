@@ -60,7 +60,7 @@ namespace Bengine {
 	}
 
 	unsigned int
-	AudioManager::playNumTimes(const std::string& fileID, unsigned int numTimes, float volume)
+	AudioManager::playMultipleTimes(const std::string& fileID, unsigned int numTimes, float volume)
 	{
 		AudioThreadParameters p = AudioThreadParameters(fileBufferMap[fileID], fileID, volume, false, numTimes);
 		return genericPlay(fileID, p);
